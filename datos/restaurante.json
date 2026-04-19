@@ -1,0 +1,188 @@
+{
+  "nombre": "Tacos El Papaloapan",
+  "slogan": "El sabor que te lleva al corazón de Veracruz",
+  "ubicacion": {
+    "direccion": "Calle Constitución #47, Centro, Huatusco, Veracruz",
+    "referencias": "A media cuadra del parque principal, frente a la papelería El Estudiante",
+    "ciudad": "Huatusco de Chicuellar, Veracruz",
+    "maps": "https://maps.app.goo.gl/ejemplo"
+  },
+  "horarios": {
+    "lunes_viernes": "8:00 AM - 10:00 PM",
+    "sabado": "8:00 AM - 11:00 PM",
+    "domingo": "9:00 AM - 9:00 PM",
+    "nota": "Los martes cerramos a las 8:00 PM"
+  },
+  "contacto": {
+    "whatsapp": "+52 272 123 4567",
+    "telefono": "272 123 4567",
+    "instagram": "@tacospapaloapan",
+    "facebook": "Tacos El Papaloapan Huatusco"
+  },
+  "menu": {
+    "tacos": [
+      {
+        "nombre": "Taco de Bistec",
+        "precio": 22,
+        "descripcion": "Bistec de res a las brasas con cebollita y cilantro",
+        "popular": true
+      },
+      {
+        "nombre": "Taco de Suadero",
+        "precio": 22,
+        "descripcion": "Suadero bien doradito con salsa verde o roja",
+        "popular": true
+      },
+      {
+        "nombre": "Taco de Pastor",
+        "precio": 20,
+        "descripcion": "Cerdo marinado con achiote, piña y cebolla morada",
+        "popular": true
+      },
+      {
+        "nombre": "Taco de Pollo",
+        "precio": 20,
+        "descripcion": "Pollo a la plancha con verduras salteadas"
+      },
+      {
+        "nombre": "Taco de Chorizo",
+        "precio": 22,
+        "descripcion": "Chorizo artesanal estilo Veracruz con frijoles negros"
+      },
+      {
+        "nombre": "Taco de Barbacoa",
+        "precio": 25,
+        "descripcion": "Barbacoa de res cocinada en horno de tierra (solo fines de semana)",
+        "disponibilidad": "Sábados y domingos"
+      },
+      {
+        "nombre": "Taco de Nopales con Queso",
+        "precio": 18,
+        "descripcion": "Para los vegetarianos, nopales asados con queso Oaxaca"
+      }
+    ],
+    "quesadillas": [
+      {
+        "nombre": "Quesadilla Sencilla",
+        "precio": 35,
+        "descripcion": "Tortilla de maíz hecha a mano con queso Oaxaca"
+      },
+      {
+        "nombre": "Quesadilla con Pastor",
+        "precio": 45,
+        "descripcion": "Quesadilla rellena de pastor con guacamole"
+      },
+      {
+        "nombre": "Quesadilla con Bistec",
+        "precio": 48,
+        "descripcion": "Quesadilla con bistec y rajas de chile poblano"
+      }
+    ],
+    "gorditas": [
+      {
+        "nombre": "Gordita de Frijol con Queso",
+        "precio": 28,
+        "descripcion": "Masa gruesa rellena de frijoles negros y queso fresco"
+      },
+      {
+        "nombre": "Gordita de Picadillo",
+        "precio": 32,
+        "descripcion": "Rellena de picadillo de res con chile y papas"
+      }
+    ],
+    "bebidas": [
+      {
+        "nombre": "Agua de Jamaica",
+        "precio": 20,
+        "descripcion": "Agua fresca de jamaica natural, sin conservadores"
+      },
+      {
+        "nombre": "Agua de Horchata",
+        "precio": 20,
+        "descripcion": "Horchata de arroz con canela"
+      },
+      {
+        "nombre": "Refresco",
+        "precio": 18,
+        "descripcion": "Coca-Cola, Sprite, Fanta o Manzanita"
+      },
+      {
+        "nombre": "Café de Olla",
+        "precio": 22,
+        "descripcion": "Café veracruzano con canela y piloncillo"
+      },
+      {
+        "nombre": "Agua Natural",
+        "precio": 15
+      }
+    ],
+    "extras": [
+      {
+        "nombre": "Guacamole",
+        "precio": 25,
+        "descripcion": "Guacamole hecho al momento con aguacate de la región"
+      },
+      {
+        "nombre": "Orden de Frijoles",
+        "precio": 20,
+        "descripcion": "Frijoles negros de olla con epazote"
+      },
+      {
+        "nombre": "Orden de Arroz",
+        "precio": 20
+      },
+      {
+        "nombre": "Salsa Verde",
+        "precio": 0,
+        "descripcion": "Incluida sin costo"
+      },
+      {
+        "nombre": "Salsa Roja",
+        "precio": 0,
+        "descripcion": "Incluida sin costo"
+      }
+    ]
+  },
+  "formas_de_pago": [
+    "Efectivo",
+    "Transferencia bancaria (BBVA y Banorte)",
+    "Tarjeta de débito",
+    "Tarjeta de crédito (con cargo del 3%)"
+  ],
+  "servicios": [
+    "Comer en el local",
+    "Para llevar",
+    "Pedidos por WhatsApp (mínimo 10 tacos para delivery en la zona centro)"
+  ],
+  "preguntas_frecuentes": [
+    {
+      "pregunta": "¿Tienen estacionamiento?",
+      "respuesta": "No contamos con estacionamiento propio, pero hay estacionamiento público a una cuadra en la calle Independencia."
+    },
+    {
+      "pregunta": "¿Hacen pedidos a domicilio?",
+      "respuesta": "Sí, hacemos entregas en la zona centro de Huatusco con pedido mínimo de 10 tacos. El costo de envío es de $30 pesos. Solo por WhatsApp."
+    },
+    {
+      "pregunta": "¿Tienen opciones vegetarianas?",
+      "respuesta": "Sí, tenemos tacos de nopales con queso y gorditas de frijol con queso. También podemos adaptar algunos platillos sin carne, solo avísanos."
+    },
+    {
+      "pregunta": "¿Aceptan reservaciones?",
+      "respuesta": "Sí aceptamos reservaciones para grupos de 10 personas o más. Contáctanos por WhatsApp con al menos un día de anticipación."
+    },
+    {
+      "pregunta": "¿Cuánto tiempo tarda un pedido para llevar?",
+      "respuesta": "Los pedidos para llevar están listos en aproximadamente 15-20 minutos. Si haces tu pedido por WhatsApp puedes recogerlo sin esperar."
+    },
+    {
+      "pregunta": "¿Venden por mayoreo o para eventos?",
+      "respuesta": "Sí, hacemos paquetes para eventos, fiestas y reuniones empresariales. Contáctanos para cotizar."
+    },
+    {
+      "pregunta": "¿Sus tortillas son de maíz o de harina?",
+      "respuesta": "Todas nuestras tortillas son de maíz hechas a mano en el local. También tenemos tortillas de harina si así lo prefieren."
+    }
+  ],
+  "sobre_nosotros": "Somos una taquería familiar con más de 15 años sirviendo los mejores tacos de Huatusco. Usamos ingredientes frescos de productores locales veracruzanos y recetas que han pasado de generación en generación. Nuestro nombre rinde homenaje al río Papaloapan, símbolo de nuestra región."
+}
