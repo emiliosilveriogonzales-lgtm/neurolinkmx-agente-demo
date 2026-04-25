@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuroLinkmx — Agentes de IA para tu negocio</title>
+<style>
+/* ─── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #070714;
+  --dark:     #1A1A2E;
+  --cyan:     #00B4D8;
+  --cyan2:    #0077A8;
+  --white:    #F0F4FF;
+  --muted:    #8892A4;
+  --card:     #0F0F24;
+  --border:   rgba(0,180,216,.18);
+  --glow:     0 0 32px rgba(0,180,216,.25);
+  --font:     'Segoe UI', system-ui, sans-serif;
+  --radius:   14px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--white);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ─── Fade-in animation via IntersectionObserver ───────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.fade-up.delay-1 { transition-delay: .1s; }
+.fade-up.delay-2 { transition-delay: .2s; }
+.fade-up.delay-3 { transition-delay: .3s; }
+.fade-up.delay-4 { transition-delay: .4s; }
+
+/* ─── Layout helpers ───────────────────────────────────────── */
+.container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+section { padding: 100px 0; }
+.section-label {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.section-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: 540px;
+}
+.cyan { color: var(--cyan); }
+
+/* ─── NAV ──────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  background: rgba(7,7,20,.82);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.nav-logo {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+.nav-logo span { color: var(--cyan); }
+.nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: .9rem;
+  color: var(--muted);
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--cyan); }
+.nav-cta {
+  background: var(--cyan);
+  color: var(--bg) !important;
+  font-weight: 700;
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-size: .88rem;
+  transition: background .2s, box-shadow .2s;
+}
+.nav-cta:hover { background: #00d4ff; box-shadow: 0 0 20px rgba(0,180,216,.4); }
+
+/* ─── HERO ──────────────────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 68px;
+}
+
+/* Grid de fondo */
+#hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,180,216,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,180,216,.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 40%, transparent 100%);
+}
+
+/* Glow central */
+#hero::after {
+  content: '';
+  position: absolute;
+  top: 20%; left: 50%;
+  transform: translateX(-50%);
+  width: 700px; height: 400px;
+  background: radial-gradient(ellipse, rgba(0,180,216,.14) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,180,216,.1);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: .82rem;
+  color: var(--cyan);
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+.hero-badge::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--cyan);
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .5; transform: scale(1.4); }
+}
+.hero-title {
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -.03em;
+  margin-bottom: 22px;
+}
+.hero-title .line2 {
+  background: linear-gradient(90deg, #00B4D8, #7DF9FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 1.15rem;
+  color: var(--muted);
+  max-width: 560px;
+  margin: 0 auto 40px;
+}
+.hero-btns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--cyan);
+  color: var(--bg);
+  font-weight: 800;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: background .2s, box-shadow .2s, transform .15s;
+  cursor: pointer;
+  border: none;
+}
+.btn-primary:hover {
+  background: #00d4ff;
+  box-shadow: 0 0 28px rgba(0,180,216,.45);
+  transform: translateY(-2px);
+}
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--white);
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  transition: border-color .2s, color .2s, transform .15s;
+  cursor: pointer;
+}
+.btn-outline:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  transform: translateY(-2px);
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: .75rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  animation: bounce 2s infinite;
+}
+.hero-scroll::after {
+  content: '';
+  width: 1px; height: 36px;
+  background: linear-gradient(var(--cyan), transparent);
+}
+@keyframes bounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+/* ─── STATS ─────────────────────────────────────────────────── */
+#stats { padding: 60px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.stat-item {
+  background: var(--card);
+  padding: 36px 28px;
+  text-align: center;
+}
+.stat-number {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--cyan);
+  line-height: 1;
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: .88rem;
+  color: var(--muted);
+}
+
+/* ─── DEMO CHAT ──────────────────────────────────────────────── */
+#demo { background: var(--dark); }
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.demo-text .section-sub { margin-bottom: 28px; }
+
+.demo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+.tag {
+  background: rgba(0,180,216,.1);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: .8rem;
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+/* Chat widget */
+.chat-widget {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--glow);
+  max-width: 380px;
+  margin-left: auto;
+}
+.chat-header {
+  background: #128C7E;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.chat-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00B4D8, #0077A8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.chat-name { font-weight: 700; font-size: .95rem; }
+.chat-status { font-size: .75rem; opacity: .8; }
+
+.chat-body {
+  padding: 16px;
+  min-height: 320px;
+  background: #0a1929;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: .88rem;
+}
+
+.msg {
+  max-width: 82%;
+  padding: 9px 13px;
+  border-radius: 12px;
+  line-height: 1.45;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.msg.show { opacity: 1; transform: translateY(0); }
+.msg-bot {
+  background: var(--dark);
+  border-bottom-left-radius: 3px;
+  align-self: flex-start;
+  color: var(--white);
+}
+.msg-user {
+  background: #005C4B;
+  border-bottom-right-radius: 3px;
+  align-self: flex-end;
+  color: var(--white);
+}
+.msg-time {
+  font-size: .65rem;
+  color: rgba(255,255,255,.4);
+  text-align: right;
+  margin-top: 3px;
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 9px 13px;
+  background: var(--dark);
+  border-radius: 12px;
+  border-bottom-left-radius: 3px;
+  width: fit-content;
+  opacity: 0;
+  transition: opacity .3s;
+}
+.typing-indicator.show { opacity: 1; }
+.typing-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  animation: typing .9s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: .15s; }
+.typing-dot:nth-child(3) { animation-delay: .3s; }
+@keyframes typing {
+  0%,60%,100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+
+/* ─── SERVICIOS ──────────────────────────────────────────────── */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 56px;
+}
+.service-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  transition: border-color .25s, transform .25s, box-shadow .25s;
+}
+.service-card:hover {
+  border-color: var(--cyan);
+  transform: translateY(-4px);
+  box-shadow: var(--glow);
+}
+.service-icon {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  display: block;
+}
+.service-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.service-desc {
+  font-size: .88rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ─── ANTES vs DESPUÉS ──────────────────────────────────────── */
+#compare { background: var(--dark); }
+.compare-header { text-align: center; margin-bottom: 56px; }
+.compare-header .section-sub { margin: 0 auto; }
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 56px 1fr;
+  gap: 0;
+  align-items: stretch;
+}
+.compare-col {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.compare-col-header {
+  padding: 18px 24px;
+  font-weight: 800;
+  font-size: .95rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.compare-col.before .compare-col-header { background: rgba(255,80,80,.12); color: #FF5050; }
+.compare-col.after .compare-col-header { background: rgba(0,180,216,.12); color: var(--cyan); }
+.compare-items { padding: 8px 0; }
+.compare-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 13px 24px;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  font-size: .9rem;
+}
+.compare-item:last-child { border-bottom: none; }
+.compare-icon { font-size: 1rem; margin-top: 1px; flex-shrink: 0; }
+.compare-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--cyan);
+}
+
+/* ─── PRECIOS ────────────────────────────────────────────────── */
+.pricing-header { text-align: center; margin-bottom: 56px; }
+.pricing-header .section-sub { margin: 0 auto; }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.price-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  position: relative;
+  transition: transform .25s, box-shadow .25s;
+}
+.price-card:hover { transform: translateY(-4px); }
+.price-card.featured {
+  border-color: var(--cyan);
+  box-shadow: var(--glow);
+}
+.price-badge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cyan);
+  color: var(--bg);
+  font-size: .72rem;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 100px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.price-plan {
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.price-amount {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.price-amount sup { font-size: 1.2rem; vertical-align: super; }
+.price-amount .period { font-size: .95rem; font-weight: 400; color: var(--muted); }
+.price-desc {
+  font-size: .85rem;
+  color: var(--muted);
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  min-height: 44px;
+}
+.price-features { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 10px; }
+.price-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: .88rem;
+  color: var(--muted);
+}
+.price-features li::before {
+  content: '✓';
+  color: var(--cyan);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.price-features li.no { color: rgba(255,255,255,.25); }
+.price-features li.no::before { content: '✕'; color: rgba(255,255,255,.2); }
+.btn-plan {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 13px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: .95rem;
+  cursor: pointer;
+  border: none;
+  transition: background .2s, box-shadow .2s, transform .15s;
+}
+.btn-plan-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--white);
+}
+.btn-plan-outline:hover { border-color: var(--cyan); color: var(--cyan); }
+.btn-plan-filled {
+  background: var(--cyan);
+  color: var(--bg);
+}
+.btn-plan-filled:hover { background: #00d4ff; box-shadow: 0 0 20px rgba(0,180,216,.4); transform: translateY(-1px); }
+
+/* ─── REQUISITOS ────────────────────────────────────────────── */
+#requisitos { background: var(--dark); }
+.req-header { margin-bottom: 56px; }
+.req-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.req-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  transition: border-color .25s;
+}
+.req-card:hover { border-color: rgba(0,180,216,.4); }
+.req-num {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(0,180,216,.12);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .85rem;
+  font-weight: 800;
+  color: var(--cyan);
+  flex-shrink: 0;
+}
+.req-title { font-weight: 700; margin-bottom: 5px; }
+.req-desc { font-size: .87rem; color: var(--muted); }
+
+/* ─── CTA FINAL ──────────────────────────────────────────────── */
+#cta {
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,180,216,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,180,216,.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+#cta::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(0,180,216,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-inner { position: relative; z-index: 2; }
+.cta-title {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 900;
+  line-height: 1.12;
+  margin-bottom: 18px;
+}
+.cta-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: 480px;
+  margin: 0 auto 36px;
+}
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #25D366;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  padding: 17px 34px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: background .2s, box-shadow .2s, transform .15s;
+  text-decoration: none;
+}
+.btn-whatsapp:hover {
+  background: #20b958;
+  box-shadow: 0 0 32px rgba(37,211,102,.4);
+  transform: translateY(-2px);
+}
+.btn-whatsapp svg { flex-shrink: 0; }
+.cta-note {
+  margin-top: 18px;
+  font-size: .82rem;
+  color: var(--muted);
+}
+
+/* ─── FOOTER ─────────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 36px 0;
+  text-align: center;
+  font-size: .83rem;
+  color: var(--muted);
+}
+footer span { color: var(--cyan); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .demo-grid { grid-template-columns: 1fr; gap: 40px; }
+  .chat-widget { max-width: 100%; margin: 0 auto; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .compare-divider { display: none; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+  .req-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .services-grid { grid-template-columns: 1fr; }
+  section { padding: 72px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Neuro<span>Link</span>mx</div>
+    <ul class="nav-links">
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#precios">Precios</a></li>
+      <li><a href="#requisitos">Requisitos</a></li>
+      <li><a href="#cta" class="nav-cta">Empezar →</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge fade-up">Inteligencia Artificial aplicada a negocios locales</div>
+      <h1 class="hero-title fade-up delay-1">
+        Tu negocio siempre<br>
+        <span class="line2">disponible, 24/7</span>
+      </h1>
+      <p class="hero-sub fade-up delay-2">
+        Agentes de IA para WhatsApp que atienden clientes, responden preguntas y procesan pedidos — sin que tú estés al pendiente.
+      </p>
+      <div class="hero-btns fade-up delay-3">
+        <a href="#cta" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.083.537 4.043 1.479 5.741L.057 23.197a1 1 0 001.246 1.246l5.456-1.422A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.896 0-3.672-.54-5.18-1.47l-.37-.22-3.837 1.007 1.007-3.754-.24-.386A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Hablar por WhatsApp
+        </a>
+        <a href="#demo" class="btn-outline">Ver demo ↓</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">scroll</div>
+</section>
+
+<!-- ═══════════ STATS ═══════════ -->
+<section id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fade-up">
+        <div class="stat-number" data-target="98">0<span>%</span></div>
+        <div class="stat-label">Mensajes respondidos en &lt;3 seg</div>
+      </div>
+      <div class="stat-item fade-up delay-1">
+        <div class="stat-number" data-target="24">0<span>h</span></div>
+        <div class="stat-label">Disponible los 7 días de la semana</div>
+      </div>
+      <div class="stat-item fade-up delay-2">
+        <div class="stat-number" data-target="3">0<span>x</span></div>
+        <div class="stat-label">Más ventas al automatizar la atención</div>
+      </div>
+      <div class="stat-item fade-up delay-3">
+        <div class="stat-number" data-target="80">0<span>%</span></div>
+        <div class="stat-label">Reducción en tiempo de atención manual</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ DEMO CHAT ═══════════ -->
+<section id="demo">
+  <div class="container">
+    <div class="demo-grid">
+      <div class="demo-text fade-up">
+        <p class="section-label">Demo en vivo</p>
+        <h2 class="section-title">Conoce a <span class="cyan">Lupita</span>,<br>tu agente de IA</h2>
+        <p class="section-sub">
+          Lupita conoce tu menú, precios, horarios y políticas. Responde al instante, nunca se cansa y jamás pierde la paciencia. Exactamente lo que tu negocio necesita.
+        </p>
+        <div class="demo-tags">
+          <span class="tag">🧠 Memoria de conversación</span>
+          <span class="tag">🌮 Conoce tu menú</span>
+          <span class="tag">📍 Ubicación y horarios</span>
+          <span class="tag">🛒 Toma de pedidos</span>
+          <span class="tag">💬 Tono natural</span>
+          <span class="tag">🔁 Aprende de FAQs</span>
+        </div>
+      </div>
+      <div class="fade-up delay-2">
+        <div class="chat-widget">
+          <div class="chat-header">
+            <div class="chat-avatar">🌮</div>
+            <div>
+              <div class="chat-name">Tacos El Papaloapan</div>
+              <div class="chat-status">● En línea ahora</div>
+            </div>
+          </div>
+          <div class="chat-body" id="chatBody">
+            <div class="typing-indicator" id="typing">
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SERVICIOS ═══════════ -->
+<section id="servicios">
+  <div class="container">
+    <div class="fade-up">
+      <p class="section-label">Qué hacemos</p>
+      <h2 class="section-title">Todo lo que tu negocio<br>necesita, automatizado</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-up delay-1">
+        <span class="service-icon">🤖</span>
+        <div class="service-title">Agente de WhatsApp</div>
+        <div class="service-desc">Agente de IA entrenado con la información de tu negocio. Responde preguntas, toma pedidos y agenda citas en tiempo real.</div>
+      </div>
+      <div class="service-card fade-up delay-2">
+        <span class="service-icon">🧠</span>
+        <div class="service-title">Memoria Inteligente</div>
+        <div class="service-desc">El agente recuerda el contexto de cada conversación. Si el cliente dice "lo mismo que la semana pasada", Lupita ya sabe qué pedir.</div>
+      </div>
+      <div class="service-card fade-up delay-3">
+        <span class="service-icon">📋</span>
+        <div class="service-title">Gestión de Menú y Precios</div>
+        <div class="service-desc">Actualizamos tu menú, precios y promociones en minutos. Sin tecnicismos: solo mándanos los cambios por WhatsApp.</div>
+      </div>
+      <div class="service-card fade-up delay-1">
+        <span class="service-icon">📊</span>
+        <div class="service-title">Panel de Métricas</div>
+        <div class="service-desc">Visualiza cuántos mensajes responde el agente, cuáles son las preguntas más frecuentes y a qué horas hay más demanda.</div>
+      </div>
+      <div class="service-card fade-up delay-2">
+        <span class="service-icon">🔔</span>
+        <div class="service-title">Escalamiento Humano</div>
+        <div class="service-desc">Cuando el cliente necesita atención humana, el agente lo detecta y te notifica al instante para que tomes el control.</div>
+      </div>
+      <div class="service-card fade-up delay-3">
+        <span class="service-icon">🔧</span>
+        <div class="service-title">Soporte y Mantenimiento</div>
+        <div class="service-desc">Nos encargamos de todo el soporte técnico. Tú te dedicas a tu negocio; nosotros mantenemos el agente funcionando.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ANTES vs DESPUÉS ═══════════ -->
+<section id="compare">
+  <div class="container">
+    <div class="compare-header fade-up">
+      <p class="section-label">Transformación real</p>
+      <h2 class="section-title">Antes y después de NeuroLinkmx</h2>
+      <p class="section-sub">Esto es lo que cambia en tu operación diaria desde el primer mes.</p>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-col before fade-up">
+        <div class="compare-col-header">❌ Sin agente de IA</div>
+        <div class="compare-items">
+          <div class="compare-item"><span class="compare-icon">😩</span><span>Contestas WhatsApp a las 11pm mientras cenas</span></div>
+          <div class="compare-item"><span class="compare-icon">🕐</span><span>Clientes esperan horas sin respuesta y se van con la competencia</span></div>
+          <div class="compare-item"><span class="compare-icon">🔁</span><span>Repites el menú y los precios 50 veces al día</span></div>
+          <div class="compare-item"><span class="compare-icon">📵</span><span>Los domingos no contestas y pierdes pedidos</span></div>
+          <div class="compare-item"><span class="compare-icon">💸</span><span>Contratas a alguien solo para responder mensajes</span></div>
+          <div class="compare-item"><span class="compare-icon">😕</span><span>No sabes cuántos clientes se van por falta de atención</span></div>
+        </div>
+      </div>
+      <div class="compare-divider">→</div>
+      <div class="compare-col after fade-up delay-2">
+        <div class="compare-col-header">✅ Con NeuroLinkmx</div>
+        <div class="compare-items">
+          <div class="compare-item"><span class="compare-icon">😴</span><span>Duermes tranquilo — Lupita atiende mientras descansas</span></div>
+          <div class="compare-item"><span class="compare-icon">⚡</span><span>Respuesta en menos de 3 segundos, 24/7, los 365 días</span></div>
+          <div class="compare-item"><span class="compare-icon">🌮</span><span>El agente conoce tu menú, precios y promociones de memoria</span></div>
+          <div class="compare-item"><span class="compare-icon">📈</span><span>Captura pedidos incluso cuando tú no puedes atender</span></div>
+          <div class="compare-item"><span class="compare-icon">💰</span><span>Un agente vale menos que un empleado y trabaja 24h sin descanso</span></div>
+          <div class="compare-item"><span class="compare-icon">📊</span><span>Panel con métricas de conversaciones y satisfacción</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PRECIOS ═══════════ -->
+<section id="precios">
+  <div class="container">
+    <div class="pricing-header fade-up">
+      <p class="section-label">Planes</p>
+      <h2 class="section-title">Precios transparentes,<br>sin sorpresas</h2>
+      <p class="section-sub">Elige el plan que mejor se adapta al tamaño de tu negocio. Todos incluyen soporte en español.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- Básico -->
+      <div class="price-card fade-up delay-1">
+        <div class="price-plan">Básico</div>
+        <div class="price-amount"><sup>$</sup>1,499<span class="period">/mes</span></div>
+        <p class="price-desc">Ideal para negocios que quieren dar su primer paso con IA.</p>
+        <ul class="price-features">
+          <li>1 agente de WhatsApp</li>
+          <li>Hasta 500 conversaciones/mes</li>
+          <li>Menú y precios actualizables</li>
+          <li>Respuestas en español natural</li>
+          <li>Soporte por WhatsApp (L-V)</li>
+          <li class="no">Panel de métricas</li>
+          <li class="no">Escalamiento humano</li>
+          <li class="no">Integración con POS</li>
+        </ul>
+        <a href="https://wa.me/527831234567?text=Hola%2C%20me%20interesa%20el%20plan%20B%C3%A1sico" target="_blank" class="btn-plan btn-plan-outline">Empezar gratis →</a>
+      </div>
+      <!-- Pro -->
+      <div class="price-card featured fade-up delay-2">
+        <div class="price-badge">⭐ Más popular</div>
+        <div class="price-plan">Pro</div>
+        <div class="price-amount"><sup>$</sup>2,999<span class="period">/mes</span></div>
+        <p class="price-desc">Para negocios con alto volumen de mensajes y pedidos diarios.</p>
+        <ul class="price-features">
+          <li>1 agente de WhatsApp</li>
+          <li>Conversaciones ilimitadas</li>
+          <li>Menú y precios actualizables</li>
+          <li>Respuestas en español natural</li>
+          <li>Soporte 7 días a la semana</li>
+          <li>Panel de métricas completo</li>
+          <li>Escalamiento humano automático</li>
+          <li class="no">Integración con POS</li>
+        </ul>
+        <a href="https://wa.me/527831234567?text=Hola%2C%20me%20interesa%20el%20plan%20Pro" target="_blank" class="btn-plan btn-plan-filled">Quiero el Plan Pro →</a>
+      </div>
+      <!-- Enterprise -->
+      <div class="price-card fade-up delay-3">
+        <div class="price-plan">Enterprise</div>
+        <div class="price-amount" style="font-size:2rem;">A medida</div>
+        <p class="price-desc">Soluciones personalizadas para cadenas o negocios con múltiples sucursales.</p>
+        <ul class="price-features">
+          <li>Múltiples agentes y sucursales</li>
+          <li>Conversaciones ilimitadas</li>
+          <li>Personalización completa</li>
+          <li>Integración con tu POS o CRM</li>
+          <li>Soporte dedicado 24/7</li>
+          <li>Panel avanzado con exportación</li>
+          <li>SLA garantizado</li>
+          <li>Capacitación al equipo</li>
+        </ul>
+        <a href="https://wa.me/527831234567?text=Hola%2C%20me%20interesa%20el%20plan%20Enterprise" target="_blank" class="btn-plan btn-plan-outline">Cotizar ahora →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ REQUISITOS ═══════════ -->
+<section id="requisitos">
+  <div class="container">
+    <div class="req-header fade-up">
+      <p class="section-label">Lo que necesitas</p>
+      <h2 class="section-title">Requisitos mínimos</h2>
+      <p class="section-sub">No necesitas ser técnico ni tener infraestructura especial. Si tienes WhatsApp, ya casi estás listo.</p>
+    </div>
+    <div class="req-grid">
+      <div class="req-card fade-up delay-1">
+        <div class="req-num">01</div>
+        <div>
+          <div class="req-title">Número de WhatsApp Business</div>
+          <div class="req-desc">Un número de teléfono dedicado a tu negocio con la app de WhatsApp Business instalada. Puede ser el que ya usas.</div>
+        </div>
+      </div>
+      <div class="req-card fade-up delay-2">
+        <div class="req-num">02</div>
+        <div>
+          <div class="req-title">Información de tu negocio</div>
+          <div class="req-desc">Menú o catálogo de productos, precios, horarios y cualquier política que quieras que el agente conozca.</div>
+        </div>
+      </div>
+      <div class="req-card fade-up delay-1">
+        <div class="req-num">03</div>
+        <div>
+          <div class="req-title">30 minutos de tu tiempo</div>
+          <div class="req-desc">Una llamada de onboarding donde nos cuentas sobre tu negocio. Nosotros nos encargamos del resto de la configuración.</div>
+        </div>
+      </div>
+      <div class="req-card fade-up delay-2">
+        <div class="req-num">04</div>
+        <div>
+          <div class="req-title">Nada más. En serio.</div>
+          <div class="req-desc">Sin servidores, sin código, sin conocimientos técnicos. Tú enfocate en tu negocio; nosotros ponemos la tecnología a trabajar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA FINAL ═══════════ -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <p class="section-label fade-up">¿Listo para automatizar?</p>
+      <h2 class="cta-title fade-up delay-1">
+        Empieza hoy.<br>
+        <span class="cyan">Tu primer semana es gratis.</span>
+      </h2>
+      <p class="cta-sub fade-up delay-2">
+        Sin contratos largos, sin letra chica. Prueba el agente con tus clientes reales y ve los resultados tú mismo.
+      </p>
+      <div class="fade-up delay-3">
+        <a href="https://wa.me/527831234567?text=Hola%20NeuroLinkmx%2C%20quiero%20una%20demo%20gratis%20para%20mi%20negocio" target="_blank" class="btn-whatsapp">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.083.537 4.043 1.479 5.741L.057 23.197a1 1 0 001.246 1.246l5.456-1.422A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.896 0-3.672-.54-5.18-1.47l-.37-.22-3.837 1.007 1.007-3.754-.24-.386A9.944 9.944 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Quiero mi demo gratis
+        </a>
+        <p class="cta-note">📲 Respuesta en menos de 1 hora · Sin compromisos</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="container">
+    <p>© 2026 <span>NeuroLinkmx</span> — Inteligencia Artificial para negocios mexicanos 🇲🇽</p>
+  </div>
+</footer>
+
+<!-- ═══════════ JS ═══════════ -->
+<script>
+/* ── IntersectionObserver para fade-up ─────────────────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+/* ── Contadores animados ────────────────────────────────────── */
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = +el.dataset.target;
+    const suffix = el.querySelector('span').textContent;
+    const duration = 1800;
+    const step = target / (duration / 16);
+    let current = 0;
+
+    const tick = () => {
+      current = Math.min(current + step, target);
+      el.innerHTML = Math.floor(current) + '<span>' + suffix + '</span>';
+      if (current < target) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    statsObserver.unobserve(el);
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-target]').forEach(el => statsObserver.observe(el));
+
+/* ── Demo chat animado ─────────────────────────────────────── */
+const chatMessages = [
+  { side: 'user', text: '¡Hola! ¿A qué horas cierran hoy?' },
+  { side: 'bot',  text: '¡Hola! 😊 Hoy siendo viernes estamos abiertos hasta las 10:00 PM. ¿Se te ofrece algo más?' },
+  { side: 'user', text: '¿Cuánto cuesta el taco de pastor?' },
+  { side: 'bot',  text: 'El taco de pastor está a $20 MXN 🌮🔥 Es de nuestros más pedidos — cerdo marinado con achiote, piña y cebolla morada. ¿Cuántos te llevo anotados?' },
+  { side: 'user', text: '5 de pastor y 3 de bistec, para llevar' },
+  { side: 'bot',  text: '¡Qué rica elección! ✅ Anoto:\n• 5 tacos de pastor — $100\n• 3 tacos de bistec — $66\nTotal: $166 MXN\n¿Recoges aquí o necesitas domicilio?' },
+];
+
+const chatBody = document.getElementById('chatBody');
+const typingEl = document.getElementById('typing');
+let chatStarted = false;
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function getTime() {
+  const now = new Date();
+  return now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+}
+
+async function appendMsg(msg) {
+  const div = document.createElement('div');
+  div.className = 'msg msg-' + msg.side;
+  div.innerHTML = msg.text.replace(/\n/g, '<br>') +
+    '<div class="msg-time">' + getTime() + '</div>';
+  chatBody.insertBefore(div, typingEl);
+  await sleep(30);
+  div.classList.add('show');
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+async function runChat() {
+  if (chatStarted) return;
+  chatStarted = true;
+
+  await sleep(600);
+
+  for (let i = 0; i < chatMessages.length; i++) {
+    const msg = chatMessages[i];
+
+    if (msg.side === 'bot') {
+      typingEl.classList.add('show');
+      chatBody.scrollTop = chatBody.scrollHeight;
+      await sleep(1200);
+      typingEl.classList.remove('show');
+    }
+
+    await appendMsg(msg);
+    await sleep(msg.side === 'user' ? 700 : 1000);
+  }
+}
+
+/* Disparar el chat cuando la sección entre en viewport */
+const chatObserver = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting) {
+    runChat();
+    chatObserver.disconnect();
+  }
+}, { threshold: 0.4 });
+
+chatObserver.observe(document.getElementById('demo'));
+</script>
+</body>
+</html>
